@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Bank</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="form-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="customerId" placeholder="Customer ID" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="register.html">Register here</a></p>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    
+    const id = document.getElementById('customerId').value;
+    const password = document.getElementById('password').value;
+
+    fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerId: id, password: password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Login successful!");
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Login failed!");
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+</body>
+</html>
